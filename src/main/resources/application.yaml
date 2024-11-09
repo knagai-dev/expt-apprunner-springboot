@@ -1,0 +1,5 @@
+spring:
+  redis:
+    host: ${CACHE_HOST:localhost}
+    port: ${CACHE_PORT:6379}
+    password: ${CACHE_PASSWORD:}
