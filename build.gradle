@@ -24,4 +24,17 @@ repositories {
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-data-redis')
+    javaAgent('software.amazon.opentelemetry:aws-opentelemetry-agent:1.30.0') // ADOT Java エージェントのダウンロード
+}
+
+// ダウンロードした ADOT Java エージェントをコピー
+task agentLibs(type: Copy) {
+    from configurations.javaAgent.singleFile
+    into layout.buildDirectory.dir('libs')
+    rename 'aws-opentelemetry-agent-.*\\.jar', 'aws-opentelemetry-agent.jar'
+}
+
+// アプリケーションの jar をビルドした際に ADOT の jar も取得する
+bootJar {
+    dependsOn agentLibs
 }
